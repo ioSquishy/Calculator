@@ -33,4 +33,19 @@ let input = "";
  */
 function calculate(equation) {
   console.log(`Calculating: ${equation}`);
+  let cleanEquation = "";
+  for (let i = 0; i < equation.length; i++) {
+    if (equation[i] === "×") {
+      cleanEquation += "*";
+      continue;
+    }
+    if (equation[i] === " ") {
+      continue;
+    }
+    cleanEquation += equation[i];
+  }
+  console.log(`Cleaned input: ${cleanEquation}`);
+  let result = eval(cleanEquation);
+  console.log(`Result: ${result}`);
+  return result;
 }
