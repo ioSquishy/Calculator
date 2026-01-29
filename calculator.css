@@ -1,0 +1,32 @@
+#calculator {
+  width: 300px;
+  height: 400px;
+  background-color: gainsboro;
+  display: block;
+  border: 1px solid black;
+}
+
+#screen {
+  width: 75%;
+  height: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  background-color: aliceblue;
+  border: 1px solid black;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 50px 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px 50px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  gap: 5px;
+}
+
+button {
+  width: 50px;
+  height: 50px;
+}
