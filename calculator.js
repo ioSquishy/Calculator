@@ -7,25 +7,49 @@ const buttons = document.querySelectorAll(".buttons button");
 buttons.forEach(button => {
   button.addEventListener("click", onClickListener);
 })
+let input = "";
+let lastNum = 0;
+let lastNumStartIndex = 0;
+let inputIsResult = false;
 function onClickListener(event) {
   let value = event.target.innerText;
   console.log(`Clicked: ${value}`);
 
+  /**
+   * todo: bug fix
+   * for some reason after press =,
+   * the lastNumStartIndex is 1 greater than it should
+   */
   if (value === "C") {
     input = "";
+    lastNum = 0;
+    lastNumStartIndex = 0;
   } else if (value === "=") {
-    input = calculate(input);
+    let result = calculate(input);
+    input = result.toLocaleString('en-US');
+    screen.innerText += ` = \n${input}`;
+    lastNum = result;
+    inputIsResult = true;
+    lastNumStartIndex = 0;
+    return;
   } else if (isNaN(value)) {
+    inputIsResult = false;
     input += ` ${value} `;
+    lastNumStartIndex = input.length + 1;
+    lastNum = 0;
   } else {
-    input += `${value}`;
+    if (inputIsResult) {
+      lastNum = 0;
+      inputIsResult = false;
+    }
+    lastNum = (lastNum * 10) + Number(value);
+    input = input.substring(0, lastNumStartIndex) + lastNum.toLocaleString('en-US');
   }
 
   screen.innerText = input;
 }
 
 // Calculator logic
-let input = "";
 /**
  * Calculates result from plain-text equation
  * @param {String} equation 
@@ -39,7 +63,7 @@ function calculate(equation) {
     // skip/replace cosmetic characters
     switch (equation[i]) {
       case "×":
-      cleanEquation += "*";
+        cleanEquation += "*";
       case "*":
       case " ":
       case ",":
@@ -55,8 +79,8 @@ function calculate(equation) {
               continue;
             default:
               console.log(`Unexpected value in input: ${equation[i]}`);
-      continue;
-    }
+              continue;
+          }
         } else {
           // if a number, add it to equation
           cleanEquation += String(equation[i]);
