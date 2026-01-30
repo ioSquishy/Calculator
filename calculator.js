@@ -33,19 +33,43 @@ let input = "";
  */
 function calculate(equation) {
   console.log(`Calculating: ${equation}`);
+  // clean up equation
   let cleanEquation = "";
   for (let i = 0; i < equation.length; i++) {
-    if (equation[i] === "×") {
+    // skip/replace cosmetic characters
+    switch (equation[i]) {
+      case "×":
       cleanEquation += "*";
+      case "*":
+      case " ":
+      case ",":
+        continue;
+      default:
+        // if not a number, ensure character is expected
+        if (isNaN(equation[i])) {
+          switch(equation[i]) {
+            case "+":
+            case "-":
+            case "/":
+              cleanEquation += String(equation[i]);
+              continue;
+            default:
+              console.log(`Unexpected value in input: ${equation[i]}`);
       continue;
     }
-    if (equation[i] === " ") {
-      continue;
+        } else {
+          // if a number, add it to equation
+          cleanEquation += String(equation[i]);
+        }
     }
-    cleanEquation += equation[i];
   }
   console.log(`Cleaned input: ${cleanEquation}`);
+
+  // evaulate equation
   let result = eval(cleanEquation);
+  if (!isFinite(result)) {
+    result = "undefined"
+  }
   console.log(`Result: ${result}`);
   return result;
 }
