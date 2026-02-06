@@ -8,6 +8,7 @@
   background-color: gainsboro;
   display: block;
   border: 1px solid black;
+  border-radius: 5px;
 }
 
 p#screen {
@@ -19,6 +20,7 @@ p#screen {
   background-color: aliceblue;
   border: 1px solid black;
   padding: 10px;
+  border-radius: 5px;
 }
 
 .buttons {
@@ -34,6 +36,7 @@ p#screen {
 button {
   width: 50px;
   height: 50px;
+  border-radius: 3px;
 }
 
 button.symbol {
@@ -44,4 +47,9 @@ button.symbol {
 button#clear {
   background-color: rgb(255, 67, 67);
   color: white;
+}
+
+button:hover {
+  box-shadow: 1px 1px black;
+  font-weight: 900;
 }
