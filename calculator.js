@@ -1,5 +1,5 @@
 const calculator = document.querySelector("#calculator");
-const screen = document.querySelector("#screen");
+const calcScreen = document.querySelector("#screen");
 const buttons = document.querySelectorAll(".buttons button");
 
 // Listeners
@@ -19,7 +19,8 @@ function onClickListener(event) {
     if (inputIsResult) return;
     let numberResult = calculate(input);
     let localeResult = numberResult.toLocaleString();
-    screen.innerText += ` = \n${localeResult}`;
+    renderInputOnScreen();
+    calcScreen.innerText += ` = \n${localeResult}`;
     input = [numberResult];
     inputIsResult = true;
     return;
@@ -48,7 +49,7 @@ function renderInputOnScreen() {
     }
   }
 
-  screen.innerText = output;
+  calcScreen.innerText = output;
 }
 
 /**
@@ -126,3 +127,14 @@ function calculate(equation) {
   console.log(`Result: ${numbers[0]}`);
   return numbers[0];
 }
+
+
+function flipCursor() {
+  if (calcScreen.innerText.at(-1) === "|") {
+    calcScreen.innerText = calcScreen.innerText.slice(0, -1);
+  } else {
+    calcScreen.innerText += "|";
+  }
+}
+
+setInterval(flipCursor, 700);
