@@ -48,6 +48,45 @@ function renderInputOnScreen() {
   screen.innerText = output;
 }
 
+/**
+ * Converts an infix expression array to postfix.
+ * @param {Array} infix expression
+ * @return {Array} postfix expression
+ */
+function convertToPostfix(infix) {
+  const precedence = {
+    '+': 1,
+    '-': 1,
+    '×': 2,
+    '/': 2
+  }
+
+  let operators = []; // stack
+  let postfix = [];
+
+  // convert to postfix
+  for (let exp of input) {
+    // push numbers to postfix
+    if (!isNaN(exp)) {
+      postfix.push(exp);
+      continue;
+    }
+    // operator postfix logic
+    let topOperation = operators.at(-1);
+    if (operators.length != 0 && precedence[topOperation] >= precedence[exp]) {
+      postfix.push(operators.pop());
+    }
+    operators.push(exp);
+  }
+
+  // pop any remaining operators from the stack and append them to the postfix array
+  while (operators.length != 0) {
+    postfix.push(operators.pop());
+  }
+
+  return postfix;
+}
+
 // Calculator logic
 /**
  * Calculates result from array of inputs
@@ -56,14 +95,31 @@ function renderInputOnScreen() {
  */
 function calculate(equation) {
   console.log(`Calculating: ${equation}`);
-  let result = 1;
+  let postfix = convertToPostfix(input);
 
-  //TODO calculatee
+  let numbers = [];
+  for (let exp of postfix) {
+    if (!isNaN(exp)) {
+      numbers.push(exp);
+    } else {
+      let num1 = numbers.pop();
+      let num2 = numbers.pop();
+      let result;
+      switch (exp) {
+        case "+": result = num1 + num2; break;
+        case "-": result = num1 - num2; break;
+        case "×": result = num1 * num2; break;
+        case "/": result = num1 / num2; break;
+        default: console.log(`Unknown exp: ${exp}`);
+      }
+      numbers.push(result);
+    }
+  }
 
   // evaulate equation
-  if (!isFinite(result)) {
-    result = "undefined"
+  if (!isFinite(numbers[0])) {
+    return "undefined"
   }
-  console.log(`Result: ${result}`);
-  return result;
+  console.log(`Result: ${numbers[0]}`);
+  return numbers[0];
 }
