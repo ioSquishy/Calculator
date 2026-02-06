@@ -16,21 +16,24 @@ function onClickListener(event) {
   if (value === "C") {
     input = [0];
   } else if (value === "=") {
+    if (inputIsResult) return;
     let numberResult = calculate(input);
     let localeResult = numberResult.toLocaleString();
     screen.innerText += ` = \n${localeResult}`;
     input = [numberResult];
+    inputIsResult = true;
     return;
   } else if (isNaN(value)) {
     input.push(value);
     input.push(0);
   } else {
-    if (input.length === 1 && input.at(-1) != 0) {
+    if (inputIsResult) {
       input = [0];
     }
     input[input.length - 1] = (input.at(-1) * 10) + Number(value);
   }
 
+  inputIsResult = false;
   renderInputOnScreen();
 }
 
@@ -102,8 +105,8 @@ function calculate(equation) {
     if (!isNaN(exp)) {
       numbers.push(exp);
     } else {
-      let num1 = numbers.pop();
       let num2 = numbers.pop();
+      let num1 = numbers.pop();
       let result;
       switch (exp) {
         case "+": result = num1 + num2; break;
