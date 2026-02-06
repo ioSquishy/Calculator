@@ -3,31 +3,57 @@ const calcScreen = document.querySelector("#screen");
 const buttons = document.querySelectorAll(".buttons button");
 
 // Listeners
-//Click Listener
+// Click Listener
 buttons.forEach(button => {
-  button.addEventListener("click", onClickListener);
-})
+  button.addEventListener("click", (e) => {
+    acceptInput(e.target.innerText);
+  });
+});
+// Key Listener
+document.addEventListener("keyup", (e) => {
+  let value = e.key;
+  if (isNaN(value)) {
+    switch (value) {
+      case "*": value = "×";
+      case "/":
+      case "+":
+      case "-":
+        acceptInput(value);
+        break;
+      case "Backspace": 
+        acceptInput("C");
+        break;
+      case "Enter":
+        acceptInput("=")
+        break;
+    }
+  } else {
+    acceptInput(value)
+  }
+});
+
 let input = [0];
 let inputIsResult = false;
-function onClickListener(event) {
-  let value = event.target.innerText;
+function acceptInput(value) {
   console.log(`Clicked: ${value}`);
   
-  if (value === "C") {
+  if (value === "C") { // clear
     input = [0];
-  } else if (value === "=") {
+  } else if (value === "=") { // equals
     if (inputIsResult) return;
     let numberResult = calculate(input);
     let localeResult = numberResult.toLocaleString();
-    renderInputOnScreen();
+    
+    // render screen manually so input and screen values can diverge
+    renderInputOnScreen(); // re-render to remove any cursor if applicable (cursor is the '|')
     calcScreen.innerText += ` = \n${localeResult}`;
     input = [numberResult];
     inputIsResult = true;
     return;
-  } else if (isNaN(value)) {
+  } else if (isNaN(value)) { // operator
     input.push(value);
     input.push(0);
-  } else {
+  } else { // number
     if (inputIsResult) {
       input = [0];
     }
@@ -38,6 +64,9 @@ function onClickListener(event) {
   renderInputOnScreen();
 }
 
+/**
+ * Renders the input array to the calculator screen.
+ */
 function renderInputOnScreen() {
   let output = "";
 
@@ -91,7 +120,6 @@ function convertToPostfix(infix) {
   return postfix;
 }
 
-// Calculator logic
 /**
  * Calculates result from array of inputs
  * @param {Array} equation 
