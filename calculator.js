@@ -10,7 +10,8 @@ buttons.forEach(button => {
   });
 });
 // Key Listener
-document.addEventListener("keyup", (e) => {
+document.addEventListener("keydown", (e) => {
+  e.preventDefault();
   let value = e.key;
   if (isNaN(value)) {
     switch (value) {
