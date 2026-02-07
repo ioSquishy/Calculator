@@ -57,5 +57,8 @@ button#clear {
 
 button:hover {
   box-shadow: 1px 1px black;
+}
+
+button:active {
   font-weight: 900;
 }

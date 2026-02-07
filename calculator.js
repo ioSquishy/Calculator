@@ -20,6 +20,9 @@ document.addEventListener("keyup", (e) => {
       case "-":
         acceptInput(value);
         break;
+      case "c":
+      case "C":
+      case "Escape":
       case "Backspace": 
         acceptInput("C");
         break;
@@ -33,7 +36,7 @@ document.addEventListener("keyup", (e) => {
 });
 
 let input = [0];
-let inputIsResult = false;
+let inputIsResult = true;
 function acceptInput(value) {
   console.log(`Clicked: ${value}`);
   
@@ -155,14 +158,3 @@ function calculate(equation) {
   console.log(`Result: ${numbers[0]}`);
   return numbers[0];
 }
-
-
-function flipCursor() {
-  if (calcScreen.innerText.at(-1) === "|") {
-    calcScreen.innerText = calcScreen.innerText.slice(0, -1);
-  } else {
-    calcScreen.innerText += "|";
-  }
-}
-
-setInterval(flipCursor, 700);
