@@ -64,6 +64,9 @@ function acceptInput(value) {
       input = [0];
       inputIsResult = false;
     }
+    if ((input.at(-1) * 10) + Number(value) >= Number.MAX_SAFE_INTEGER) {
+      return;
+    }
     input[input.length - 1] = (input.at(-1) * 10) + Number(value);
     renderInputOnScreen();
   }

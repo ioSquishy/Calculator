@@ -22,6 +22,7 @@ p#screen {
   width: 200px;
   height: 25%;
   margin: 0 auto;
+  overflow: auto;
 
   background-color: aliceblue;
   border: 1px solid black;
