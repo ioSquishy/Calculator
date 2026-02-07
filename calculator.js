@@ -42,29 +42,31 @@ function acceptInput(value) {
   
   if (value === "C") { // clear
     input = [0];
+    inputIsResult = true;
+    renderInputOnScreen();
   } else if (value === "=") { // equals
     if (inputIsResult) return;
     let numberResult = calculate(input);
     let localeResult = numberResult.toLocaleString();
     
-    // render screen manually so input and screen values can diverge
-    renderInputOnScreen(); // re-render to remove any cursor if applicable (cursor is the '|')
+    // render screen manually
     calcScreen.innerText += ` = \n${localeResult}`;
     input = [numberResult];
     inputIsResult = true;
-    return;
   } else if (isNaN(value)) { // operator
     input.push(value);
+    renderInputOnScreen();
     input.push(0);
+    inputIsResult = false;
   } else { // number
     if (inputIsResult) {
       input = [0];
+      inputIsResult = false;
     }
     input[input.length - 1] = (input.at(-1) * 10) + Number(value);
+    renderInputOnScreen();
   }
 
-  inputIsResult = false;
-  renderInputOnScreen();
 }
 
 /**
@@ -73,10 +75,11 @@ function acceptInput(value) {
 function renderInputOnScreen() {
   let output = "";
 
-  for (let item of input) {
+  for (let i = 0; i < input.length; i++) {
+    let item = input.at(i);
     if (isNaN(item)) {
       output += ` ${item} `;
-    } else if (item != 0) {
+    } else if (!(inputIsResult && item === 0)) {
       output += item.toLocaleString();
     }
   }
